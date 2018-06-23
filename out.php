@@ -1,24 +1,8 @@
 <?php
-// Copyright 2011 JMB Software, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-
 
 @ini_set('memory_limit', -1);
 @set_magic_quotes_runtime(0);
 @set_time_limit(0);
-
 
 /*#<CONFIG>*/
 $C = array('domain' => 'soft.jmb-soft.com',
@@ -33,10 +17,8 @@ $C = array('domain' => 'soft.jmb-soft.com',
 'flag_filter_no_image' => '1');
 /*#</CONFIG>*/
 
-
 // Globals
 $g_force_type = null;
-
 
 // Session variables
 $now = time();
@@ -45,7 +27,6 @@ $unique = false;
 $ip_hash = md5($_SERVER['REMOTE_ADDR']);
 $session_file = "data/sessions/{$ip_hash[0]}/{$ip_hash[0]}/{$_SERVER['REMOTE_ADDR']}";
 $g_external_info = false;
-
 
 // Session defaults
 $g_session = array(
@@ -64,7 +45,6 @@ $g_session = array(
     'v' => array(),
     'ni' => false
 );
-
 
 $_SERVER['HTTP_USER_AGENT'] = str_replace('|', '', $_SERVER['HTTP_USER_AGENT']);
 $_SERVER['HTTP_REFERER'] = str_replace('|', '', $_SERVER['HTTP_REFERER']);
@@ -498,79 +478,64 @@ function select_trade($trade)
 function is_allowed_trade(&$trade, &$send_to_trade, &$i_excludes)
 {
     global $g_session;
-
     // Don't send back to self
     if( !empty($trade['domain']) && $trade['domain'] == $send_to_trade[0] )
     {
         return false;
     }
-
     // Check category
     if( isset($_GET['c']) && !empty($send_to_trade[2]) && strpos($send_to_trade[2], ",{$_GET['c']},") === false )
     {
         return false;
     }
-
     // Check group
     if( isset($_GET['g']) && !empty($send_to_trade[3]) && strpos($send_to_trade[3], ",{$_GET['g']},") === false )
     {
         return false;
     }
-
     // Check excludes
     if( !empty($trade[$i_excludes]) && strpos(",{$trade[$i_excludes]},", ",{$send_to_trade[0]},") !== false )
     {
         return false;
     }
-
     // Don't send to already visited
     if( in_array($send_to_trade[0], $g_session['v']) )
     {
         return false;
     }
-
     // Don't send to already visited (external info)
     if( in_array(substr(crc32($send_to_trade[0]), -4), $g_session['ei']) )
     {
         return false;
     }
-
     return true;
 }
-
 function skim_from_scheme($scheme_name, $click)
 {
     // Sanitize
     $scheme_name = preg_replace('~[^a-z0-9\-_]~i', '', $scheme_name);
-
     if( file_exists("data/skim_schemes/$scheme_name") )
     {
         $scheme = explode('|', file_get_contents("data/skim_schemes/$scheme_name"));
         return $scheme[$click % 50];
     }
-
     // Return default skim
     return 70;
 }
-
 function geoip_country($ip_address)
 {
     $geoip_country_begin = 16776960;
     $standard_record_length = 3;
-
     $fp = fopen('assets/geoip.dat', 'rb');
     $long_ip = ip2long($ip_address);
     $offset = 0;
     $country_id = null;
     $quality = 1;
-
     for( $depth = 31; $depth >= 0; --$depth )
     {
         fseek($fp, 2 * $standard_record_length * $offset, SEEK_SET);
         $buf = fread($fp, 2 * $standard_record_length);
-
         $x = array(0,0);
-
         for( $i = 0; $i < 2; ++$i )
         {
             for( $j = 0; $j < $standard_record_length; ++$j )
@@ -578,14 +543,12 @@ function geoip_country($ip_address)
                 $x[$i] += ord($buf[$standard_record_length * $i + $j]) << ($j * 8);
             }
         }
-
         if( $long_ip & (1 << $depth) )
         {
             if( $x[1] >= $geoip_country_begin )
             {
                $country_id = $x[1] - $geoip_country_begin;
             }
-
             $offset = $x[1];
         }
         else
@@ -594,18 +557,14 @@ function geoip_country($ip_address)
             {
                 $country_id = $x[0] - $geoip_country_begin;
             }
-
             $offset = $x[0];
         }
-
         if( !empty($country_id) )
         {
             break;
         }
     }
-
     fclose($fp);
-
     if( !empty($country_id) )
     {
         $record_size_country_weight = 20;
@@ -616,18 +575,12 @@ function geoip_country($ip_address)
         $quality = fread($fp, $record_size_country);
         fclose($fp);
     }
-
     return array($country_id, $quality);
 }
-
-
-
 // Get microtime as float
 function microtime_float()
 {
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
-
-
 ?>
