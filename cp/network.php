@@ -1,19 +1,4 @@
 <?php
-// Copyright 2011 JMB Software, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-
 
 require_once 'includes/functions.php';
 require_once 'network-util.php';
@@ -49,14 +34,12 @@ function _xSync()
             file_write(DIR_BLACKLIST . '/' . $bl_file, $file_contents);
         }
     }
-
-
+    
     // Sync categories
     if( isset($settings[NETWORK_SYNC_CATEGORIES]) )
     {
         file_write(FILE_CATEGORIES, $settings[NETWORK_SYNC_CATEGORIES]);
     }
-
 
     // Sync countries
     if( isset($settings[NETWORK_SYNC_COUNTRIES]) )
@@ -64,13 +47,11 @@ function _xSync()
         file_write(FILE_COUNTRIES, $settings[NETWORK_SYNC_COUNTRIES]);
     }
 
-
     // Sync groups
     if( isset($settings[NETWORK_SYNC_GROUPS]) )
     {
         file_write(FILE_GROUPS, $settings[NETWORK_SYNC_GROUPS]);
     }
-
 
     // Sync network sites
     if( isset($settings[NETWORK_SYNC_NETWORK_SITES]) && is_array($settings[NETWORK_SYNC_NETWORK_SITES]) )
@@ -94,13 +75,11 @@ function _xSync()
         network_site_update_stored_values();
     }
 
-
     // Sync search engines
     if( isset($settings[NETWORK_SYNC_SEARCH_ENGINES]) )
     {
         file_write(FILE_SEARCH_ENGINES, $settings[NETWORK_SYNC_SEARCH_ENGINES]);
     }
-
 
     // Sync skim schemes
     if( isset($settings[NETWORK_SYNC_SKIM_SCHEMES]) && is_array($settings[NETWORK_SYNC_SKIM_SCHEMES]) )
@@ -112,7 +91,6 @@ function _xSync()
             file_write(DIR_SKIM_SCHEMES_DYNAMIC . '/' . $scheme, $ss_file['dynamic']);
         }
     }
-
 
     // Sync trades
     if( isset($settings[NETWORK_SYNC_TRADES]) && is_array($settings[NETWORK_SYNC_TRADES]) )
@@ -137,13 +115,11 @@ function _xSync()
         }
     }
 
-
     // Sync trade rules
     if( isset($settings[NETWORK_SYNC_TRADE_RULES]) )
     {
         file_write(FILE_TRADE_RULES, $settings[NETWORK_SYNC_TRADE_RULES]);
     }
-
 
     network_success(true);
 }
