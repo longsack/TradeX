@@ -1,17 +1,4 @@
 <?php
-// Copyright 2011 JMB Software, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 // To fix this error: Warning: date(): It is not safe to rely on the system's timezone settings.
 // Uncomment the line below and enter your desired time zone. See: http://php.net/manual/en/timezones.php for a list of zones
@@ -71,13 +58,11 @@ define('FILE_HISTORY', DIR_DATA . '/history');
 define('FILE_LOG_CRON', DIR_LOGS . '/cron.log');
 define('FILE_LOG_GRABBER', DIR_LOGS . '/grabber.log');
 
-
 // String
 define('STRING_LF_UNIX', "\n");
 define('STRING_LF_WINDOWS', "\r\n");
 define('STRING_LF_MAC', "\r");
 define('STRING_BLANK', '');
-
 
 // Regular expressions
 define('REGEX_SITE_TEMPLATES', '~^(?!email).*?(\.tpl$|\.css$)~');
@@ -92,12 +77,10 @@ define('REGEX_CP_FUNCTION', '~^(_x[a-zA-Z0-9_]+)(\((.*?)\))?~');
 define('REGEX_NOT_STATS_LOG', '~$(?<!-clicks|-in|-out|-history)~');
 define('REGEX_IS_STATS_LOG', '~$(?<=-clicks|-in|-out)~');
 
-
 // Directory functions
 define('DIR_READ_ALL', 0x00000001);
 define('DIR_READ_FILES', 0x00000002);
 define('DIR_READ_DIRECTORIES', 0x00000004);
-
 
 // Trade statuses
 define('STATUS_UNCONFIRMED', 'Unconfirmed');
@@ -106,11 +89,9 @@ define('STATUS_ACTIVE', 'Active');
 define('STATUS_AUTOSTOPPED', 'Autostopped');
 define('STATUS_DISABLED', 'Disabled');
 
-
 // Force types
 define('FORCE_INSTANT', 'I');
 define('FORCE_HOURLY', 'H');
-
 
 // Points
 define('POINTS_MAIN', 'Main');
@@ -118,13 +99,11 @@ define('POINTS_PRIMARY_BONUS', 'Primary Bonus');
 define('POINTS_SECONDARY_BONUS', 'Secondary Bonus');
 define('POINTS_FORCE', 'Force');
 
-
 // Records
 define('RECORD_SIZE_COUNTRY_WEIGHT', 20);
 define('RECORD_SIZE_COUNTRY', 1);
 define('STATS_PER_RECORD', 22);
 define('RECORD_SIZE_STATS', STATS_PER_RECORD * 4);
-
 
 // Misc
 define('URL_DOWNLOAD', 'http://www.jmbsoft.com/download-tradex.php');
@@ -138,25 +117,20 @@ define('SECONDS_PER_DAY', 86400);
 define('SECONDS_PER_HOUR', 3600);
 define('SECONDS_PER_MINUTE', 60);
 
-
 function grab_thumbs($trade, $url, $trigger_strings = '')
 {
     global $C;
-
     require_once 'http.php';
-
     $images = array();
     $grabbed = 0;
     $trigger_strings = str_replace(',', '|', (empty($trigger_strings) ? $C['thumb_trigger_strings'] : "$trigger_strings|{$C['thumb_trigger_strings']}"));
     $http = new HTTP();
     $http->connect_timeout = 5;
     $http->read_timeout = 10;
-
     if( !$http->GET($url) )
     {
         return null;
     }
-
     if( preg_match_all('~<img.*?>~msi', $http->body, $matches) )
     {
         foreach( $matches[0] as $match )
@@ -271,8 +245,6 @@ function resize_thumb($thumbnail, $imgsize, $width, $height)
         @imagedestroy($img_dst);
     }
 }
-
-
 
 // Globals for updates
 $g_stats_minute = false;
