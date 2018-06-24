@@ -1,17 +1,4 @@
 <?php
-// Copyright 2011 JMB Software, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 // Store the original working directory and change into the TradeX directory
 $cwd = getcwd();
@@ -32,12 +19,10 @@ if( isset($GLOBALS['C']) && isset($GLOBALS['C']['page_new']) )
     $g_saved_config = $GLOBALS['C'];
 }
 
-
 // PHP configuration settings
 @ini_set('memory_limit', '128M');
 @set_magic_quotes_runtime(0);
 @set_time_limit(90);
-
 
 // Configuration settings
 /*#<CONFIG>*/
@@ -46,7 +31,6 @@ $C = array('cookie_domain' => 'soft.jmb-soft.com',
 'keyphrase' => 'd06c8abb142c4eda4d60df1aed2dde25',
 'flag_filter_no_image' => '1');
 /*#</CONFIG>*/
-
 
 // Variables
 $now = time();
@@ -57,7 +41,6 @@ $session_length = 3600;
 $cookie_session = false;
 $ip_hash = md5($_SERVER['REMOTE_ADDR']);
 $session_file = "data/sessions/{$ip_hash[0]}/{$ip_hash[0]}/{$_SERVER['REMOTE_ADDR']}";
-
 
 // Session defaults
 $session = array(
@@ -78,11 +61,9 @@ $session = array(
     'ni'  => $C['flag_filter_no_image'] ? true : false
 );
 
-
 // Cleanup variables
 $_SERVER['HTTP_USER_AGENT'] = str_replace('|', '', $_SERVER['HTTP_USER_AGENT']);
 $_SERVER['HTTP_REFERER'] = str_replace('|', '', $_SERVER['HTTP_REFERER']);
-
 
 // Examine cookie
 if( isset($_COOKIE['tdxsess']) )
@@ -99,7 +80,6 @@ if( isset($_COOKIE['tdxsess']) )
     }
 }
 
-
 // Get session information from session file
 else
 {
@@ -109,7 +89,6 @@ else
         $cookie_session = @unserialize(@file_get_contents($session_file));
     }
 }
-
 
 // HTTP_REFERER is set and not empty
 if( isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER']) )
@@ -175,7 +154,6 @@ if( isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER']) )
         }
     }
 }
-
 
 // Check last update to see if it is time for building toplists, resetting stats, generating outlist, etc
 $last = filemtime('data/times/stats');
@@ -245,7 +223,6 @@ if( $track_hit )
     flock($fp, LOCK_UN);
     fclose($fp);
 
-
     // Log search engine and search term
     if( !empty($session['se']) )
     {
@@ -256,7 +233,6 @@ if( $track_hit )
         fclose($fp);
     }
 
-
     // Log client data
     $logfile = $session['sys'] ? "data/system_stats/{$session['t']}-in" : "data/trade_stats/{$session['d']}-in";
     $fp = fopen($logfile, 'a');
@@ -264,7 +240,6 @@ if( $track_hit )
     fwrite($fp, "$now|{$_SERVER['REMOTE_ADDR']}|{$session['p']}|{$_SERVER['HTTP_USER_AGENT']}|{$session['c']}|{$_SERVER['HTTP_REFERER']}|{$_SERVER['REQUEST_URI']}|{$session['l']}\n");
     flock($fp, LOCK_UN);
     fclose($fp);
-
 
     // Update incoming stats
     $record_items = 22;
@@ -290,7 +265,6 @@ if( $track_hit )
     fseek($fp, -$in_size, SEEK_CUR);
     fwrite($fp, pack($pack_arg, $r[1], $r[2], $r[3], $r[4], $r[5], $r[6]), $in_size);
 
-
     // Seek to minute, read, update
     fseek($fp, $minute_offset, SEEK_SET);
     $r = unpack($pack_arg, fread($fp, $in_size));
@@ -300,10 +274,8 @@ if( $track_hit )
     $r[4 + $session['cq']]++;
     fseek($fp, -$in_size, SEEK_CUR);
     fwrite($fp, pack($pack_arg, $r[1], $r[2], $r[3], $r[4], $r[5], $r[6]), $in_size);
-
     flock($fp, LOCK_UN);
     fclose($fp);
-
 
     // Output Javascript code to set the session cookie
     $serialized = serialize($session);
@@ -314,14 +286,12 @@ if( $track_hit )
          "</script>\n";
 }
 
-
 // Debug logging
 //$fp = fopen('logs/debug.log', 'a');
 //flock($fp, LOCK_EX);
 //fwrite($fp, "IN|$now|{$_SERVER['REMOTE_ADDR']}|{$_SERVER['HTTP_REFERER']}|{$_SERVER['REQUEST_URI']}|{$_COOKIE['tdxsess']}|$serialized|$track_hit\n");
 //flock($fp, LOCK_UN);
 //fclose($fp);
-
 
 // LinkX compatibility
 if( !empty($g_saved_config) )
@@ -337,7 +307,6 @@ set_include_path($include_path);
 
 // Restore original working directory
 chdir($cwd);
-
 
 function geoip_country($ip_address)
 {
@@ -406,13 +375,10 @@ function geoip_country($ip_address)
     return array($country_id, $quality);
 }
 
-
-
 // Get microtime as float
 function microtime_float()
 {
     list($usec, $sec) = explode(' ', microtime());
     return ((float)$usec + (float)$sec);
 }
-
 ?>
