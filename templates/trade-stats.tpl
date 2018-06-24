@@ -6,7 +6,6 @@
           <div class="ta-center">
             <h2>Stats For: {$g_trade.domain}</h2>
           </div>
-
           <table class="item-table" cellspacing="0" cellpadding="4" align="center">
             <thead>
               <tr class="ta-center">
@@ -28,9 +27,7 @@
               </tr>
             </tbody>
           </table>
-
           <br />
-
           <table class="item-table" cellspacing="0" cellpadding="4" align="center">
             <thead>
               <tr class="ta-center">
