@@ -1,17 +1,4 @@
 <?php
-// Copyright 2011 JMB Software, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 require_once 'lib/global.php';
 require_once 'utility.php';
@@ -33,7 +20,6 @@ if( !$C['flag_accept_new_trades'] )
     $t->Display('register-closed.tpl');
     exit;
 }
-
 
 $r = $_REQUEST['r'];
 if( isset($functions[$r]) )
@@ -151,7 +137,6 @@ function _xRegister()
         $v->Register(in_array($_REQUEST['category'], $categories), VT_IS_TRUE, "You have selected an invalid category");
         $_REQUEST['categories'] = array($_REQUEST['category']);
     }
-
 
     if( !$v->Validate() )
     {
