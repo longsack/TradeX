@@ -1,18 +1,4 @@
 <?php
-// Copyright 2011 JMB Software, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 define('CAPTCHA_COOKIE', 'tradexcaptcha');
 define('CAPTCHA_EXPIRES', 300);
 define('CAPTCHA_FONT', 'captcha.ttf');
@@ -21,10 +7,8 @@ define('CAPTCHA_PADDING_TOP', 15);
 define('CAPTCHA_PADDING_LEFT', 10);
 define('CAPTCHA_CHAR_OFFSET', -4);
 
-
 class Captcha
 {
-
     var $allowed_chars = array('A', 'B', 'C', 'D', 'E', 'F', 'H', 'J', 'K', 'M', 'N', 'P', 'Q', 'R', 'T', 'U', 'V', 'W', 'X', 'Y', '3', '4', '6', '7', '8', '9');
 
     var $foreground_color = array(0x00, 0x00, 0x55);
@@ -33,9 +17,7 @@ class Captcha
 
     function Captcha()
     {
-
     }
-
     function GenerateAndDisplay()
     {
         global $C;
@@ -47,14 +29,12 @@ class Captcha
         $width = $box['width'] + CAPTCHA_PADDING_LEFT * 2;
         $height = $box['height'] + CAPTCHA_PADDING_TOP * 2;
 
-
         // Setup the image
         $image = imagecreatetruecolor($width, $height);
         $foreground = imagecolorallocate($image, $this->foreground_color[0], $this->foreground_color[1], $this->foreground_color[2]);
         $background = imagecolorallocate($image, $this->background_color[0], $this->background_color[1], $this->background_color[2]);
         imagealphablending($image, true);
         imagefill($image, 0, 0, $background);
-
 
         // Draw characters
         $offset = 0;
@@ -65,23 +45,17 @@ class Captcha
             $offset += $bb['width'] + CAPTCHA_CHAR_OFFSET;
         }
 
-
         // Warp the text
         $image = $this->Warp($image, $width, $height);
-
 
         // Set CAPTCHA cookie
         $session = sha1(uniqid(rand(), true));
         setcookie(CAPTCHA_COOKIE, $session, time() + CAPTCHA_EXPIRES, $C['cookie_path'], $C['cookie_domain']);
-
         require_once 'textdb.php';
         $db = new CaptchasDB();
-
         $db->Add(array('session' => $session,
                        'code' => $string,
                        'timestamp' => time()));
-
-
 
         // Output the image
         if( function_exists('imagepng') )
