@@ -1,7 +1,6 @@
 {template file="global-header.tpl" title="Stats Login"}
 
     <form action="trade-stats.php" method="post">
-
       <table align="center" width="900" cellspacing="0" cellpadding="4">
         <tr>
           <td colspan="2">
@@ -15,7 +14,6 @@
           <td colspan="2">
             <div class="error">
             Login failed, please fix the following items:
-
             <ul>
             {foreach var=$error from=$g_errors}
               <li>{$error}</li>
@@ -46,7 +44,6 @@
           </td>
         </tr>
       </table>
-
     </form>
 
 {template file="global-footer.tpl"}
